@@ -11,7 +11,7 @@ npm install
 
 To start the blockchain:  
 ```bash
-npm hardhat compile
+npx hardhat compile
 npx hardhat node
 ```
 
@@ -24,7 +24,7 @@ npx hardhat run scripts/deploy-vehicle.ts --network localhost
 
 To run unit tests:  
 ```bash
-npm hardhat test
+npx hardhat test
 ```
 
 ## Frontend
