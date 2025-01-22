@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import vehicleContractJSON from "../artifacts/contracts/VehicleContract.sol/VehicleContract.json";
 
-export const connectToBlockchain = async (vehicleContractAdress: string) => {
+export const createVehicle = async (vehicleContractAdress: string) => {
     if (typeof window.ethereum !== "undefined") {
         try {
             console.log("Connexion à MetaMask en cours...");
