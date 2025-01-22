@@ -1,4 +1,5 @@
 import { ethers } from "ethers";
+import {AccountRoles} from "../types/AccountRoles.ts";
 
 export const getUserInfo = async () => {
     if (typeof window.ethereum !== "undefined") {
@@ -14,7 +15,22 @@ export const getUserInfo = async () => {
             const balance = await provider.getBalance(address);
             const balanceInEther = ethers.formatEther(balance);
 
+            // récupérer le nom de l'utilisateur
+            let name = "Name not found"
+            if (address === AccountRoles.CONSTRUCTEUR) {
+                name = "Constructeur";
+            } else if (address === AccountRoles.PROPRIETAIRE1) {
+                name = "Propriétaire 1";
+            } else if (address === AccountRoles.PROPRIETAIRE2) {
+                name = "Propriétaire 2";
+            } else if (address === AccountRoles.GARAGISTE) {
+                name = "Garagiste";
+            } else if (address === AccountRoles.CASSE_AUTO) {
+                name = "Casse Auto";
+            }
+
             return {
+                name,
                 address,
                 balanceInEther,
             };
