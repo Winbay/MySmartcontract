@@ -1,10 +1,9 @@
-import { ethers } from "ethers";
+import {ethers} from "ethers";
 import vehicleContractJSON from "../artifacts/contracts/VehicleContract.sol/VehicleContract.json";
 
-export const sellProposal = async (
+export const sellAcceptation = async (
     vehicleContractAdress: string,
     vehicleVIN: string,
-    buyerAddress: string,
     priceInEther: {value: bigint},
 ) => {
     if (typeof window.ethereum !== "undefined") {
@@ -27,10 +26,14 @@ export const sellProposal = async (
             );
             console.log("Contrat Vehicle chargé :", vehicleContract);
 
-            // Lancer une proposition de vente
-            await vehicleContract.connect(signer).proposeSale(vehicleVIN, buyerAddress, priceInEther);
+            // TODO : Annulation de la proposition de vente si pas assez de ethers sur un des comptes
+            // const sellerBalanceBefore = await ethers.provider.getBalance(addr1.address);
+            // const buyerBalanceBefore = await ethers.provider.getBalance(addr2.address);
 
-            console.log(`Proposition de vente du véhicule avec le VIN "${vehicleVIN}" à l'adresse ${buyerAddress} lancée avec succès !`);
+            // Validation de la proposition de vente
+            await vehicleContract.connect(signer).acceptSale(vehicleVIN, priceInEther);
+
+            console.log(`Proposition de vente du véhicule avec le VIN "${vehicleVIN}" acceptée avec succès !`);
 
         } catch (error) {
             console.error("Erreur lors de la proposition de vente :", error);

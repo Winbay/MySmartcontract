@@ -7,12 +7,13 @@ import {ethers} from "ethers";
 import {AccountRoles} from "./types/AccountRoles.ts";
 import {cancelSell} from "./utils/cancelSell.ts";
 import useMetaMaskAccountListener from "./utils/useMetaMaskAccountListener.tsx";
+import {sellAcceptation} from "./utils/sellAcceptation.ts";
 
 const vehicleContractAdress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // Remplace par l'adresse de ton contrat déployé
 
 const App: React.FC = () => {
     useMetaMaskAccountListener();
-    
+
     const [userName, setUserName] = useState<string | null>(null);
     const [userAddress, setUserAddress] = useState<string | null>(null);
     const [userBalance, setUserBalance] = useState<string | null>(null);
@@ -20,6 +21,7 @@ const App: React.FC = () => {
     const [target, setTarget] = useState<string>("");
 
     const plaqueImatriculation = "VIN12";
+    const priceInEther = { value: ethers.parseEther("1") };
 
     const handleCreateVehicle = () => {
         createVehicle(vehicleContractAdress);
@@ -30,7 +32,7 @@ const App: React.FC = () => {
     };
 
     const handleSellProposal = () => {
-        sellProposal(vehicleContractAdress, plaqueImatriculation, target, ethers.parseEther("1"))
+        sellProposal(vehicleContractAdress, plaqueImatriculation, target, priceInEther)
     }
 
     const handleCancelSell = () => {
@@ -38,7 +40,7 @@ const App: React.FC = () => {
     }
 
     const handleSellAcceptation = () => {
-        // Acceptation
+        sellAcceptation(vehicleContractAdress, plaqueImatriculation, priceInEther)
     }
 
     const handleMaintenanceDemand = () => {
@@ -73,16 +75,16 @@ const App: React.FC = () => {
     return (
         <div style={styles.main}>
             <header style={{padding: "5px", backgroundColor: "#3a3a3a", textAlign: "center"}}>
-                <p><strong>Utilisateur actuel :</strong> {userName}</p>
-                <p><strong>Adresse :</strong> {userAddress}</p>
-                <p><strong>Solde :</strong> {userBalance} ETH</p>
+                <p><span>Utilisateur actuel :</span> {userName}</p>
+                <p><span>Adresse :</span> {userAddress}</p>
+                <p><span>Solde :</span> {userBalance} ETH</p>
             </header>
 
             <div style={styles.container}>
                 {userAddress === AccountRoles.CONSTRUCTEUR && (
-                    <button style={styles.button} onClick={handleCreateVehicle}>🚗 Création d'un véhicule</button>
+                    <button onClick={handleCreateVehicle}>🚗 Création d'un véhicule <span>"{plaqueImatriculation}"</span></button>
                 )}
-                <button style={styles.button} onClick={handleGetVehicle}>Récupération des infos du véhicule</button>
+                <button onClick={handleGetVehicle}>Récupération des infos du véhicule <span>"{plaqueImatriculation}"</span></button>
             </div>
 
             <hr/>
@@ -90,7 +92,6 @@ const App: React.FC = () => {
             <div style={styles.container}>
                 <button
                     style={{
-                        ...styles.button,
                         opacity: target ? 1 : 0.5,
                         cursor: target ? "pointer" : "not-allowed"
                     }}
@@ -113,19 +114,19 @@ const App: React.FC = () => {
             </div>
 
             <div style={styles.container}>
-                <button style={styles.button} onClick={handleSellAcceptation}>✅ Acceptation d'une vente</button>
-                <button style={styles.button} onClick={handleCancelSell}>❌ Annulation d'une vente</button>
+                <button onClick={handleSellAcceptation}>✅ Acceptation d'une vente</button>
+                <button onClick={handleCancelSell}>❌ Annulation d'une vente</button>
             </div>
 
             <hr/>
 
             <div style={styles.container}>
-                <button style={styles.button} onClick={handleMaintenanceDemand}>🛠️ Demande de maintenance</button>
+                <button onClick={handleMaintenanceDemand}>🛠️ Demande de maintenance</button>
             </div>
 
             <div style={styles.container}>
-                <button style={styles.button} onClick={handleMaintenanceFinalisation}>✅ Finalisation de la maintenance</button>
-                <button style={styles.button} onClick={handleMaintenanceCancel}>❌ Annulation d'une maintenance</button>
+                <button onClick={handleMaintenanceFinalisation}>✅ Finalisation de la maintenance</button>
+                <button onClick={handleMaintenanceCancel}>❌ Annulation d'une maintenance</button>
             </div>
         </div>
     );
@@ -136,18 +137,13 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: '30px',
+        gap: '15px',
         padding: '10px',
     },
     container: {
         display: 'flex',
         alignItems: 'center',
-        gap: '5px',
-    },
-    button: {
-        padding: '10px 20px',
-        fontSize: '16px',
-        cursor: 'pointer',
+        gap: '10px',
     },
 };
 
