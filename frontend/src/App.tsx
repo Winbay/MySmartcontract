@@ -5,13 +5,16 @@ import {getUserInfo} from "./utils/getUserInfo.ts";
 import {useEffect, useState} from "react";
 import {ethers} from "ethers";
 import {AccountRoles} from "./types/AccountRoles.ts";
+import {cancelSell} from "./utils/cancelSell.ts";
 
-const vehicleContractAdress = "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318"; // Remplace par l'adresse de ton contrat déployé
+const vehicleContractAdress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // Remplace par l'adresse de ton contrat déployé
 
 const App: React.FC = () => {
     const [userName, setUserName] = useState<string | null>(null);
     const [userAddress, setUserAddress] = useState<string | null>(null);
     const [userBalance, setUserBalance] = useState<string | null>(null);
+
+    const [target, setTarget] = useState<string>("");
 
     const plaqueImatriculation = "VIN12";
 
@@ -24,12 +27,11 @@ const App: React.FC = () => {
     };
 
     const handleSellProposal = () => {
-        const buyerAddress = AccountRoles.PROPRIETAIRE1; // Remplace par l'adresse de l'acheteur
-        sellProposal(vehicleContractAdress, plaqueImatriculation, buyerAddress, ethers.parseEther("10"))
+        sellProposal(vehicleContractAdress, plaqueImatriculation, target, ethers.parseEther("1"))
     }
 
     const handleCancelSell = () => {
-        // Annulation
+        cancelSell(vehicleContractAdress, plaqueImatriculation)
     }
 
     const handleSellAcceptation = () => {
@@ -47,6 +49,10 @@ const App: React.FC = () => {
     const handleMaintenanceFinalisation = () => {
         // Finalisation
     }
+
+    const handleTargetChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setTarget(event.target.value);
+    };
 
     useEffect(() => {
         const fetchUserInfo = async () => {
@@ -70,20 +76,53 @@ const App: React.FC = () => {
             </header>
 
             <div style={styles.container}>
-            <button style={styles.button} onClick={handleCreateVehicle}>Création d'un véhicule</button>
-                <button style={styles.button} onClick={handleGetVehicle}>Récupération d'un véhicule</button>
+                {userAddress === AccountRoles.CONSTRUCTEUR && (
+                    <button style={styles.button} onClick={handleCreateVehicle}>🚗 Création d'un véhicule</button>
+                )}
+                <button style={styles.button} onClick={handleGetVehicle}>Récupération des infos du véhicule</button>
+            </div>
+
+            <hr/>
+
+            <div style={styles.container}>
+                <button
+                    style={{
+                        ...styles.button,
+                        opacity: target ? 1 : 0.5,
+                        cursor: target ? "pointer" : "not-allowed"
+                    }}
+                    onClick={handleSellProposal}
+                    disabled={!target}
+                >
+                    💰 Proposition de vente d'un véhicule
+                </button>
+                <select
+                    id="role-selector"
+                    value={target}
+                    onChange={handleTargetChange}
+                    style={{padding: "5px", display: "flex"}}
+                >
+                    <option value="">-- Choisissez la cible --</option>
+                    {Object.entries(AccountRoles).map(([role, address]) => (
+                        <option key={address} value={address}>{role}</option>
+                    ))}
+                </select>
             </div>
 
             <div style={styles.container}>
-                <button style={styles.button} onClick={handleSellProposal}>Proposition de vente d'un véhicule</button>
-                <button style={styles.button} onClick={handleSellAcceptation}>Acceptation d'une vente</button>
-                <button style={styles.button} onClick={handleCancelSell}>Annulation d'une vente</button>
+                <button style={styles.button} onClick={handleSellAcceptation}>✅ Acceptation d'une vente</button>
+                <button style={styles.button} onClick={handleCancelSell}>❌ Annulation d'une vente</button>
+            </div>
+
+            <hr/>
+
+            <div style={styles.container}>
+                <button style={styles.button} onClick={handleMaintenanceDemand}>🛠️ Demande de maintenance</button>
             </div>
 
             <div style={styles.container}>
-                <button style={styles.button} onClick={handleMaintenanceDemand}>Demande de maintenance</button>
-                <button style={styles.button} onClick={handleMaintenanceFinalisation}>Finalisation de la maintenance</button>
-                <button style={styles.button} onClick={handleMaintenanceCancel}>Annulation d'une maintenance</button>
+                <button style={styles.button} onClick={handleMaintenanceFinalisation}>✅ Finalisation de la maintenance</button>
+                <button style={styles.button} onClick={handleMaintenanceCancel}>❌ Annulation d'une maintenance</button>
             </div>
         </div>
     );
