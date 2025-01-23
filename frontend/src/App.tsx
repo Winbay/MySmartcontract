@@ -6,10 +6,13 @@ import {useEffect, useState} from "react";
 import {ethers} from "ethers";
 import {AccountRoles} from "./types/AccountRoles.ts";
 import {cancelSell} from "./utils/cancelSell.ts";
+import useMetaMaskAccountListener from "./utils/useMetaMaskAccountListener.tsx";
 
 const vehicleContractAdress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // Remplace par l'adresse de ton contrat déployé
 
 const App: React.FC = () => {
+    useMetaMaskAccountListener();
+    
     const [userName, setUserName] = useState<string | null>(null);
     const [userAddress, setUserAddress] = useState<string | null>(null);
     const [userBalance, setUserBalance] = useState<string | null>(null);

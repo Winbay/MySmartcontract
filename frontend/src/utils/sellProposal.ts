@@ -30,7 +30,7 @@ export const sellProposal = async (
             // Lancer une proposition de vente
             await vehicleContract.connect(signer).proposeSale(vehicleVIN, buyerAddress, priceInEther);
 
-            console.log(`Proposition de vente du véhicule avec le VIN "${vehicleVIN}" à l'adresse ${buyerAddress} pour ${priceInEther} Ether lancée avec succès !`);
+            console.log(`Proposition de vente du véhicule avec le VIN "${vehicleVIN}" à l'adresse ${buyerAddress} lancée avec succès !`);
 
         } catch (error) {
             console.error("Erreur lors de la proposition de vente :", error);
