@@ -5,7 +5,7 @@ export const sellProposal = async (
     vehicleContractAdress: string,
     vehicleVIN: string,
     buyerAddress: string,
-    priceInEther: {value: bigint},
+    priceInEther: string,
 ) => {
     if (typeof window.ethereum !== "undefined") {
         try {
@@ -28,7 +28,7 @@ export const sellProposal = async (
             console.log("Contrat Vehicle chargé :", vehicleContract);
 
             // Lancer une proposition de vente
-            await vehicleContract.connect(signer).proposeSale(vehicleVIN, buyerAddress, priceInEther);
+            await vehicleContract.connect(signer).proposeSale(vehicleVIN, buyerAddress, ethers.parseEther(priceInEther));
 
             console.log(`Proposition de vente du véhicule avec le VIN "${vehicleVIN}" à l'adresse ${buyerAddress} lancée avec succès !`);
 

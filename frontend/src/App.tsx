@@ -3,7 +3,6 @@ import {getVehicle} from "./utils/getVehicle.ts";
 import {sellProposal} from "./utils/sellProposal.ts";
 import {getUserInfo} from "./utils/getUserInfo.ts";
 import {useEffect, useState} from "react";
-import {ethers} from "ethers";
 import {AccountRoles} from "./types/AccountRoles.ts";
 import {cancelSell} from "./utils/cancelSell.ts";
 import useMetaMaskAccountListener from "./utils/useMetaMaskAccountListener.tsx";
@@ -19,9 +18,29 @@ const App: React.FC = () => {
     const [userBalance, setUserBalance] = useState<string | null>(null);
 
     const [target, setTarget] = useState<string>("");
+    const [plaqueImatriculation, setPlaqueImatriculation] = useState<string>(() => {
+        return localStorage.getItem("plaqueImatriculation") || "";
+    });
 
-    const plaqueImatriculation = "VIN12";
-    const priceInEther = { value: ethers.parseEther("1") };
+    const [priceInEther, setPriceInEther] = useState<string>(() => {
+        return localStorage.getItem("priceInEther") || "0";
+    });
+
+    useEffect(() => {
+        localStorage.setItem("plaqueImatriculation", plaqueImatriculation);
+    }, [plaqueImatriculation]);
+
+    useEffect(() => {
+        localStorage.setItem("priceInEther", priceInEther.toString());
+    }, [priceInEther]);
+
+    const handleInputPlaqueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPlaqueImatriculation(event.target.value);
+    };
+
+    const handleInputPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPriceInEther(event.target.value);
+    };
 
     const handleCreateVehicle = () => {
         createVehicle(vehicleContractAdress);
@@ -59,6 +78,10 @@ const App: React.FC = () => {
         setTarget(event.target.value);
     };
 
+    const handleInputTargetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setTarget(event.target.value);
+    }
+
     useEffect(() => {
         const fetchUserInfo = async () => {
             const userInfo = await getUserInfo();
@@ -81,10 +104,42 @@ const App: React.FC = () => {
             </header>
 
             <div style={styles.container}>
+                <div style={styles.verticalContainer}>
+                    <label htmlFor="plaque-input">
+                        Plaque d'immatriculation
+                    </label>
+                    <input
+                        id="plaque-input"
+                        type="text"
+                        value={plaqueImatriculation}
+                        onChange={handleInputPlaqueChange}
+                        placeholder="Entrer un n° de plaque"
+                        style={styles.inputBox}
+                    />
+                </div>
+
+                <div style={styles.verticalContainer}>
+                    <label htmlFor="price-input">
+                        Prix en ethers
+                    </label>
+                    <input
+                        id="price-input"
+                        type="text"
+                        value={priceInEther}
+                        onChange={handleInputPriceChange}
+                        placeholder="Entrer un prix en ethers"
+                        style={styles.inputBox}
+                    />
+                </div>
+            </div>
+
+            <div style={styles.container}>
                 {userAddress === AccountRoles.CONSTRUCTEUR && (
-                    <button onClick={handleCreateVehicle}>🚗 Création d'un véhicule <span>"{plaqueImatriculation}"</span></button>
+                    <button onClick={handleCreateVehicle}>🚗 Création d'un véhicule <span>"{plaqueImatriculation}"</span>
+                    </button>
                 )}
-                <button onClick={handleGetVehicle}>Récupération des infos du véhicule <span>"{plaqueImatriculation}"</span></button>
+                <button onClick={handleGetVehicle}>Récupération des infos du
+                    véhicule <span>"{plaqueImatriculation}"</span></button>
             </div>
 
             <hr/>
@@ -100,17 +155,31 @@ const App: React.FC = () => {
                 >
                     💰 Proposition de vente d'un véhicule
                 </button>
-                <select
-                    id="role-selector"
-                    value={target}
-                    onChange={handleTargetChange}
-                    style={{padding: "5px", display: "flex"}}
-                >
-                    <option value="">-- Choisissez la cible --</option>
-                    {Object.entries(AccountRoles).map(([role, address]) => (
-                        <option key={address} value={address}>{role}</option>
-                    ))}
-                </select>
+
+                <div style={styles.verticalContainer}>
+                    <label htmlFor="target-input">
+                        Cible
+                    </label>
+                    <select
+                        id="role-selector"
+                        value={target}
+                        onChange={handleTargetChange}
+                        style={{padding: "5px", display: "flex"}}
+                    >
+                        <option value="">-- Choisir la cible --</option>
+                        {Object.entries(AccountRoles).map(([role, address]) => (
+                            <option key={address} value={address}>{role}</option>
+                        ))}
+                    </select>
+                    <input
+                        id="target-input"
+                        type="text"
+                        value={target}
+                        onChange={handleInputTargetChange}
+                        placeholder="Ou entrer une adresse cible"
+                        style={styles.inputBox}
+                    />
+                </div>
             </div>
 
             <div style={styles.container}>
@@ -125,7 +194,7 @@ const App: React.FC = () => {
             </div>
 
             <div style={styles.container}>
-                <button onClick={handleMaintenanceFinalisation}>✅ Finalisation de la maintenance</button>
+            <button onClick={handleMaintenanceFinalisation}>✅ Finalisation de la maintenance</button>
                 <button onClick={handleMaintenanceCancel}>❌ Annulation d'une maintenance</button>
             </div>
         </div>
@@ -145,6 +214,24 @@ const styles = {
         alignItems: 'center',
         gap: '10px',
     },
+    verticalContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    horizontalContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        gap: '10px',
+    },
+    inputBox: {
+        padding: "8px",
+        fontSize: "16px",
+        width: "100%",
+        maxWidth: "200px",
+        border: "1px solid #ccc",
+        borderRadius: "4px",
+    }
 };
 
 export default App;

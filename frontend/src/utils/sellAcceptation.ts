@@ -4,7 +4,7 @@ import vehicleContractJSON from "../artifacts/contracts/VehicleContract.sol/Vehi
 export const sellAcceptation = async (
     vehicleContractAdress: string,
     vehicleVIN: string,
-    priceInEther: {value: bigint},
+    priceInEther: string,
 ) => {
     if (typeof window.ethereum !== "undefined") {
         try {
@@ -31,7 +31,7 @@ export const sellAcceptation = async (
             // const buyerBalanceBefore = await ethers.provider.getBalance(addr2.address);
 
             // Validation de la proposition de vente
-            await vehicleContract.connect(signer).acceptSale(vehicleVIN, priceInEther);
+            await vehicleContract.connect(signer).acceptSale(vehicleVIN, { value: ethers.parseEther(priceInEther) });
 
             console.log(`Proposition de vente du véhicule avec le VIN "${vehicleVIN}" acceptée avec succès !`);
 
