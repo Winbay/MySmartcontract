@@ -5,10 +5,11 @@ import {getUserInfo} from "./utils/getUserInfo.ts";
 import {useEffect, useState} from "react";
 import {AccountRoles} from "./types/AccountRoles.ts";
 import {cancelSell} from "./utils/cancelSell.ts";
-import useMetaMaskAccountListener from "./utils/useMetaMaskAccountListener.tsx";
+import useMetaMaskAccountListener from "./utils/useMetaMaskAccountListener.ts";
 import {sellAcceptation} from "./utils/sellAcceptation.ts";
 
-const vehicleContractAdress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // Remplace par l'adresse de ton contrat déployé
+// TODO : Remplacer par l'adresse de ton contrat déployé
+const vehicleContractAdress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
 const App: React.FC = () => {
     useMetaMaskAccountListener();
@@ -17,19 +18,19 @@ const App: React.FC = () => {
     const [userAddress, setUserAddress] = useState<string | null>(null);
     const [userBalance, setUserBalance] = useState<string | null>(null);
 
-    const [target, setTarget] = useState<string>("");
+    const [proposalTarget, setProposalTarget] = useState<string>("");
+    const [maintenanceTarget, setMaintenanceTarget] = useState<string>("");
+
     const [plaqueImatriculation, setPlaqueImatriculation] = useState<string>(() => {
         return localStorage.getItem("plaqueImatriculation") || "";
     });
-
-    const [priceInEther, setPriceInEther] = useState<string>(() => {
-        return localStorage.getItem("priceInEther") || "0";
-    });
-
     useEffect(() => {
         localStorage.setItem("plaqueImatriculation", plaqueImatriculation);
     }, [plaqueImatriculation]);
 
+    const [priceInEther, setPriceInEther] = useState<string>(() => {
+        return localStorage.getItem("priceInEther") || "0";
+    });
     useEffect(() => {
         localStorage.setItem("priceInEther", priceInEther.toString());
     }, [priceInEther]);
@@ -51,7 +52,7 @@ const App: React.FC = () => {
     };
 
     const handleSellProposal = () => {
-        sellProposal(vehicleContractAdress, plaqueImatriculation, target, priceInEther)
+        sellProposal(vehicleContractAdress, plaqueImatriculation, proposalTarget, priceInEther)
     }
 
     const handleCancelSell = () => {
@@ -63,25 +64,32 @@ const App: React.FC = () => {
     }
 
     const handleMaintenanceDemand = () => {
-        // Demande
+        // TODO maintenanceDemand
     }
 
     const handleMaintenanceCancel = () => {
-        // Annulation
+        // TODO maintenanceCancel
     }
 
     const handleMaintenanceFinalisation = () => {
-        // Finalisation
+        // TODO maintenanceFinalisation
     }
 
-    const handleTargetChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setTarget(event.target.value);
+    const handleProposalTargetChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setProposalTarget(event.target.value);
     };
 
-    const handleInputTargetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setTarget(event.target.value);
+    const handleInputProposalTargetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setProposalTarget(event.target.value);
     }
 
+    const handleMaintenanceTargetChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setMaintenanceTarget(event.target.value);
+    };
+
+    const handleInputMaintenanceTargetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setMaintenanceTarget(event.target.value);
+    }
     useEffect(() => {
         const fetchUserInfo = async () => {
             const userInfo = await getUserInfo();
@@ -97,13 +105,17 @@ const App: React.FC = () => {
 
     return (
         <div style={styles.main}>
+            {/* Affichage des informations de l'utilisateur actuel */}
             <header style={{padding: "5px", backgroundColor: "#3a3a3a", textAlign: "center"}}>
                 <p><span>Utilisateur actuel :</span> {userName}</p>
                 <p><span>Adresse :</span> {userAddress}</p>
                 <p><span>Solde :</span> {userBalance} ETH</p>
             </header>
 
+            <div>(ces deux champs ci-dessous s'appliquent partout)</div>
+
             <div style={styles.container}>
+                {/* Input pour la plaque d'immatriculation */}
                 <div style={styles.verticalContainer}>
                     <label htmlFor="plaque-input">
                         Plaque d'immatriculation
@@ -118,6 +130,7 @@ const App: React.FC = () => {
                     />
                 </div>
 
+                {/* Input pour le prix en ethers */}
                 <div style={styles.verticalContainer}>
                     <label htmlFor="price-input">
                         Prix en ethers
@@ -133,37 +146,43 @@ const App: React.FC = () => {
                 </div>
             </div>
 
+            <div style={styles.whiteLine}/>
+
             <div style={styles.container}>
+                {/* Création du véhicule */}
                 {userAddress === AccountRoles.CONSTRUCTEUR && (
                     <button onClick={handleCreateVehicle}>🚗 Création d'un véhicule <span>"{plaqueImatriculation}"</span>
                     </button>
                 )}
+
+                {/* Récupération des infos du véhicule */}
                 <button onClick={handleGetVehicle}>Récupération des infos du
                     véhicule <span>"{plaqueImatriculation}"</span></button>
             </div>
 
-            <hr/>
+            <div style={styles.whiteLine}/>
 
             <div style={styles.container}>
+                {/* Proposition de vente */}
                 <button
                     style={{
-                        opacity: target ? 1 : 0.5,
-                        cursor: target ? "pointer" : "not-allowed"
+                        opacity: proposalTarget ? 1 : 0.5,
+                        cursor: proposalTarget ? "pointer" : "not-allowed"
                     }}
                     onClick={handleSellProposal}
-                    disabled={!target}
+                    disabled={!proposalTarget}
                 >
                     💰 Proposition de vente d'un véhicule
                 </button>
 
+                {/* Sélection de la cible pour la proposition de vente */}
                 <div style={styles.verticalContainer}>
                     <label htmlFor="target-input">
                         Cible
                     </label>
                     <select
-                        id="role-selector"
-                        value={target}
-                        onChange={handleTargetChange}
+                        value={proposalTarget}
+                        onChange={handleProposalTargetChange}
                         style={{padding: "5px", display: "flex"}}
                     >
                         <option value="">-- Choisir la cible --</option>
@@ -172,10 +191,9 @@ const App: React.FC = () => {
                         ))}
                     </select>
                     <input
-                        id="target-input"
                         type="text"
-                        value={target}
-                        onChange={handleInputTargetChange}
+                        value={proposalTarget}
+                        onChange={handleInputProposalTargetChange}
                         placeholder="Ou entrer une adresse cible"
                         style={styles.inputBox}
                     />
@@ -183,18 +201,54 @@ const App: React.FC = () => {
             </div>
 
             <div style={styles.container}>
+                {/* Acceptation ou annulation de la vente */}
                 <button onClick={handleSellAcceptation}>✅ Acceptation d'une vente</button>
                 <button onClick={handleCancelSell}>❌ Annulation d'une vente</button>
             </div>
 
-            <hr/>
+            <div style={styles.whiteLine}/>
 
             <div style={styles.container}>
-                <button onClick={handleMaintenanceDemand}>🛠️ Demande de maintenance</button>
+                {/* Demande de maintenance */}
+                <button
+                    style={{
+                        opacity: maintenanceTarget ? 1 : 0.5,
+                        cursor: maintenanceTarget ? "pointer" : "not-allowed"
+                    }}
+                    onClick={handleMaintenanceDemand}
+                    disabled={!maintenanceTarget}
+                >
+                    ️ Demande de maintenance
+                </button>
+
+                {/* Sélection de la cible pour la maintenance */}
+                <div style={styles.verticalContainer}>
+                    <label htmlFor="target-input">
+                        Cible
+                    </label>
+                    <select
+                        value={maintenanceTarget}
+                        onChange={handleMaintenanceTargetChange}
+                        style={{padding: "5px", display: "flex"}}
+                    >
+                        <option value="">-- Choisir la cible --</option>
+                        {Object.entries(AccountRoles).map(([role, address]) => (
+                            <option key={address} value={address}>{role}</option>
+                        ))}
+                    </select>
+                    <input
+                        type="text"
+                        value={maintenanceTarget}
+                        onChange={handleInputMaintenanceTargetChange}
+                        placeholder="Ou entrer une adresse cible"
+                        style={styles.inputBox}
+                    />
+                </div>
             </div>
 
             <div style={styles.container}>
-            <button onClick={handleMaintenanceFinalisation}>✅ Finalisation de la maintenance</button>
+                {/* Finalisation ou annulation de la maintenance */}
+                <button onClick={handleMaintenanceFinalisation}>✅ Finalisation de la maintenance</button>
                 <button onClick={handleMaintenanceCancel}>❌ Annulation d'une maintenance</button>
             </div>
         </div>
@@ -206,7 +260,7 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: '15px',
+        gap: '5px',
         padding: '10px',
     },
     container: {
@@ -231,6 +285,11 @@ const styles = {
         maxWidth: "200px",
         border: "1px solid #ccc",
         borderRadius: "4px",
+    },
+    whiteLine: {
+        height: 1,
+        backgroundColor: "#fff",
+        width: "70%",
     }
 };
 
