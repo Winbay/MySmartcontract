@@ -1,11 +1,9 @@
-import { ethers } from "ethers";
+import {ethers} from "ethers";
 import vehicleContractJSON from "../artifacts/contracts/VehicleContract.sol/VehicleContract.json";
 
-export const createVehicle = async (
+export const getHistories = async (
     vehicleContractAdress: string,
     vehicleVIN: string,
-    ownerAddress: string | null,
-    priceInEther: string,
 ) => {
     if (typeof window.ethereum !== "undefined") {
         try {
@@ -27,21 +25,8 @@ export const createVehicle = async (
             );
             console.log("Contrat Vehicle chargé :", vehicleContract);
 
-            const etherForCreate = ethers.parseEther(priceInEther);
-            const gasEstimate = await vehicleContract.createVehicle.estimateGas(
-                vehicleVIN,
-                ownerAddress,
-                etherForCreate,
-                { value: etherForCreate, blockTag: "latest" }
-            );
-
-            await vehicleContract.createVehicle(vehicleVIN, ownerAddress, etherForCreate, {
-                value: etherForCreate,
-                gasLimit: gasEstimate * 2n,
-                blockTag: "latest",
-            });
-
-            console.log("Véhicule probablement créé !");
+            // Avoir l'historique
+            // TODO
         } catch (error) {
             console.error("Erreur lors de la connexion à la blockchain :", error);
         }

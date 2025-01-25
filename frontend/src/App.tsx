@@ -47,7 +47,7 @@ const App: React.FC = () => {
     };
 
     const handleCreateVehicle = () => {
-        createVehicle(vehicleContractAdress);
+        createVehicle(vehicleContractAdress, plaqueImatriculation, userAddress, priceInEther);
     };
 
     const handleGetVehicle = () => {
@@ -81,7 +81,6 @@ const App: React.FC = () => {
     const handleProposalTargetChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setProposalTarget(event.target.value);
     };
-
     const handleInputProposalTargetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setProposalTarget(event.target.value);
     }
@@ -89,10 +88,18 @@ const App: React.FC = () => {
     const handleMaintenanceTargetChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setMaintenanceTarget(event.target.value);
     };
-
     const handleInputMaintenanceTargetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setMaintenanceTarget(event.target.value);
     }
+
+    const handleArchiveVehicle = () => {
+        // TODO
+    }
+
+    const handleGetHistories = () => {
+        // TODO
+    }
+
     useEffect(() => {
         const fetchUserInfo = async () => {
             const userInfo = await getUserInfo();
@@ -158,8 +165,21 @@ const App: React.FC = () => {
                     </button>
                 )}
 
+                {/* Archiver le véhicule */}
+                <button onClick={handleArchiveVehicle}>👋 Archiver le
+                    véhicule <span>"{plaqueImatriculation}"</span></button>
+
+            </div>
+
+            <div style={styles.whiteLine}/>
+
+            <div style={styles.container}>
                 {/* Récupération des infos du véhicule */}
                 <button onClick={handleGetVehicle}>Récupération des infos du
+                    véhicule <span>"{plaqueImatriculation}"</span></button>
+
+                {/* Récupération de l'history du véhicule */}
+                <button onClick={handleGetHistories}>Récupération de l'history du
                     véhicule <span>"{plaqueImatriculation}"</span></button>
             </div>
 
