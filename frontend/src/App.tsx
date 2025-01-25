@@ -10,6 +10,7 @@ import {sellAcceptation} from "./utils/sellAcceptation.ts";
 import {maintenanceDemand} from "./utils/maintenanceDemand.ts";
 import {maintenanceCancel} from "./utils/maintenanceCancel.ts";
 import {maintenanceFinalisation} from "./utils/maintenanceFinalisation.ts";
+import {getHistories} from "./utils/getHistories.ts";
 
 // Remplacer par l'adresse de ton contrat déployé
 const vehicleContractAdress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
@@ -97,7 +98,7 @@ const App: React.FC = () => {
     }
 
     const handleGetHistories = () => {
-        // TODO
+        getHistories(vehicleContractAdress, plaqueImatriculation)
     }
 
     useEffect(() => {
@@ -174,8 +175,8 @@ const App: React.FC = () => {
                 {/* Récupération des infos du véhicule */}
                 <button onClick={handleGetVehicle}>Récupération des infos du véhicule</button>
 
-                {/* Récupération de l'history du véhicule */}
-                <button onClick={handleGetHistories}>Récupération de l'history du véhicule</button>
+                {/* Récupération de l'historique du véhicule */}
+                <button onClick={handleGetHistories}>Récupération de l'historique du véhicule</button>
             </div>
 
             <div style={styles.whiteLine}/>

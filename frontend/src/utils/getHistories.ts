@@ -26,7 +26,11 @@ export const getHistories = async (
             console.log("Contrat Vehicle chargé :", vehicleContract);
 
             // Avoir l'historique
-            // TODO
+            const histories = await vehicleContract.connect(signer).getHistories(vehicleVIN);
+            console.log(
+                `Historique du véhicule ${vehicleVIN}:\n` +
+                histories.map((history: any) => `- ${history.description} -> ${history.garagist}`).join("\n")
+            );
         } catch (error) {
             console.error(`Erreur lors de l'obtention de l'historique du véhicule ${vehicleVIN} :`, error);
         }
