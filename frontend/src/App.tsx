@@ -7,8 +7,11 @@ import {AccountRoles} from "./types/AccountRoles.ts";
 import {cancelSell} from "./utils/cancelSell.ts";
 import useMetaMaskAccountListener from "./utils/useMetaMaskAccountListener.ts";
 import {sellAcceptation} from "./utils/sellAcceptation.ts";
+import {maintenanceDemand} from "./utils/maintenanceDemand.ts";
+import {maintenanceCancel} from "./utils/maintenanceCancel.ts";
+import {maintenanceFinalisation} from "./utils/maintenanceFinalisation.ts";
 
-// TODO : Remplacer par l'adresse de ton contrat déployé
+// Remplacer par l'adresse de ton contrat déployé
 const vehicleContractAdress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
 const App: React.FC = () => {
@@ -64,15 +67,15 @@ const App: React.FC = () => {
     }
 
     const handleMaintenanceDemand = () => {
-        // TODO maintenanceDemand
+        maintenanceDemand(vehicleContractAdress, plaqueImatriculation, maintenanceTarget, priceInEther)
     }
 
     const handleMaintenanceCancel = () => {
-        // TODO maintenanceCancel
+        maintenanceCancel(vehicleContractAdress, plaqueImatriculation)
     }
 
     const handleMaintenanceFinalisation = () => {
-        // TODO maintenanceFinalisation
+        maintenanceFinalisation(vehicleContractAdress, plaqueImatriculation)
     }
 
     const handleProposalTargetChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -258,7 +261,7 @@ const App: React.FC = () => {
 const styles = {
     main: {
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'column' as never,
         alignItems: 'center',
         gap: '5px',
         padding: '10px',
@@ -270,7 +273,7 @@ const styles = {
     },
     verticalContainer: {
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'column' as never,
         alignItems: 'center',
     },
     horizontalContainer: {
