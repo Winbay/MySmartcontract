@@ -11,6 +11,7 @@ import {maintenanceDemand} from "./utils/maintenanceDemand.ts";
 import {maintenanceCancel} from "./utils/maintenanceCancel.ts";
 import {maintenanceFinalisation} from "./utils/maintenanceFinalisation.ts";
 import {getHistories} from "./utils/getHistories.ts";
+import {archiveVehicle} from "./utils/archiveVehicle.ts";
 
 // Remplacer par l'adresse de ton contrat déployé
 const vehicleContractAdress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
@@ -94,7 +95,7 @@ const App: React.FC = () => {
     }
 
     const handleArchiveVehicle = () => {
-        // TODO
+        archiveVehicle(vehicleContractAdress, plaqueImatriculation)
     }
 
     const handleGetHistories = () => {

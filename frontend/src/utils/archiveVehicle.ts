@@ -26,7 +26,7 @@ export const archiveVehicle = async (
             console.log("Contrat Vehicle chargé :", vehicleContract);
 
             // Archiver le véhicule
-            await vehicleContract.connect(signer).askForMaintenance(vehicleVIN, targetAddress, ethers.parseEther(priceInEther), { value: ethers.parseEther(priceInEther) });
+            await vehicleContract.connect(signer).archiveVehicle(vehicleVIN);
             console.log(`Le véhicule ${vehicleVIN} a été archivé avec succès !`);
 
         } catch (error) {
