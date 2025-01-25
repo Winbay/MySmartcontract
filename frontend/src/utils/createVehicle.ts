@@ -43,7 +43,7 @@ export const createVehicle = async (
 
             console.log("Véhicule probablement créé !");
         } catch (error) {
-            console.error("Erreur lors de la connexion à la blockchain :", error);
+            console.error(`Erreur lors de la création du véhicule ${vehicleVIN} :`, error);
         }
     } else {
         console.error("MetaMask n'est pas installé !");

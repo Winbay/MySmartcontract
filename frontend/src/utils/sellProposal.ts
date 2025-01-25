@@ -33,7 +33,7 @@ export const sellProposal = async (
             console.log(`Proposition de vente du véhicule avec le VIN "${vehicleVIN}" à l'adresse ${buyerAddress} lancée avec succès !`);
 
         } catch (error) {
-            console.error("Erreur lors de la proposition de vente :", error);
+            console.error(`Erreur lors de la proposition de vente du véhicule avec le VIN "${vehicleVIN}" :`, error);
         }
     } else {
         console.error("MetaMask n'est pas installé !");

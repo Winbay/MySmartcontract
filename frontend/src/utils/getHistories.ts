@@ -28,7 +28,7 @@ export const getHistories = async (
             // Avoir l'historique
             // TODO
         } catch (error) {
-            console.error("Erreur lors de la connexion à la blockchain :", error);
+            console.error(`Erreur lors de l'obtention de l'historique du véhicule ${vehicleVIN} :`, error);
         }
     } else {
         console.error("MetaMask n'est pas installé !");

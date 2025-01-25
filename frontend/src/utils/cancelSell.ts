@@ -31,7 +31,7 @@ export const cancelSell = async (
             console.log(`Proposition de vente du véhicule avec le VIN "${vehicleVIN}" annulée avec succès !`);
 
         } catch (error) {
-            console.error("Erreur lors de la proposition de vente :", error);
+            console.error("Erreur lors de l'annulation de la proposition de vente :", error);
         }
     } else {
         console.error("MetaMask n'est pas installé !");

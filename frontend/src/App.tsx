@@ -161,26 +161,21 @@ const App: React.FC = () => {
             <div style={styles.container}>
                 {/* Création du véhicule */}
                 {userAddress === AccountRoles.CONSTRUCTEUR && (
-                    <button onClick={handleCreateVehicle}>🚗 Création d'un véhicule <span>"{plaqueImatriculation}"</span>
-                    </button>
+                    <button onClick={handleCreateVehicle}>🚗 Création du véhicule</button>
                 )}
 
                 {/* Archiver le véhicule */}
-                <button onClick={handleArchiveVehicle}>👋 Archiver le
-                    véhicule <span>"{plaqueImatriculation}"</span></button>
-
+                <button onClick={handleArchiveVehicle}>👋 Archiver le véhicule</button>
             </div>
 
             <div style={styles.whiteLine}/>
 
             <div style={styles.container}>
                 {/* Récupération des infos du véhicule */}
-                <button onClick={handleGetVehicle}>Récupération des infos du
-                    véhicule <span>"{plaqueImatriculation}"</span></button>
+                <button onClick={handleGetVehicle}>Récupération des infos du véhicule</button>
 
                 {/* Récupération de l'history du véhicule */}
-                <button onClick={handleGetHistories}>Récupération de l'history du
-                    véhicule <span>"{plaqueImatriculation}"</span></button>
+                <button onClick={handleGetHistories}>Récupération de l'history du véhicule</button>
             </div>
 
             <div style={styles.whiteLine}/>
@@ -195,7 +190,7 @@ const App: React.FC = () => {
                     onClick={handleSellProposal}
                     disabled={!proposalTarget}
                 >
-                    💰 Proposition de vente d'un véhicule
+                    💰 Proposition de vente du véhicule
                 </button>
 
                 {/* Sélection de la cible pour la proposition de vente */}

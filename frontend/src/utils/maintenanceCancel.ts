@@ -30,7 +30,7 @@ export const maintenanceCancel = async (
 
             console.log(`Demande de maintenance du véhicule avec le VIN "${vehicleVIN}" annulée avec succès !`);
         } catch (error) {
-            console.error("Erreur lors de l'annulation de la maintenance :", error);
+            console.error(`Erreur lors de l'annulation de la maintenance du véhicule ${vehicleVIN} :`, error);
         }
     } else {
         console.error("MetaMask n'est pas installé !");

@@ -32,7 +32,7 @@ export const maintenanceDemand = async (
             console.log(`Demande de maintenance du véhicule avec le VIN "${vehicleVIN}" à l'adresse ${targetAddress} lancée avec succès !`);
 
         } catch (error) {
-            console.error("Erreur lors de la demande de maintenance :", error);
+            console.error(`Erreur lors de la demande de maintenance du véhicule ${vehicleVIN} :`, error);
         }
     } else {
         console.error("MetaMask n'est pas installé !");

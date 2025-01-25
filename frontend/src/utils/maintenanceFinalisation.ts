@@ -30,7 +30,7 @@ export const maintenanceFinalisation = async (
 
             console.log(`Maintenance du véhicule avec le VIN "${vehicleVIN}" finalisée avec succès !`);
         } catch (error) {
-            console.error("Erreur lors de la finalisation de la maintenance :", error);
+            console.error(`Erreur lors de la finalisation de la maintenance du véhicule ${vehicleVIN} :`, error);
         }
     } else {
         console.error("MetaMask n'est pas installé !");

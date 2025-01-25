@@ -26,17 +26,13 @@ export const sellAcceptation = async (
             );
             console.log("Contrat Vehicle chargé :", vehicleContract);
 
-            // TODO : Annulation de la proposition de vente si pas assez de ethers sur un des comptes
-            // const sellerBalanceBefore = await ethers.provider.getBalance(addr1.address);
-            // const buyerBalanceBefore = await ethers.provider.getBalance(addr2.address);
-
             // Validation de la proposition de vente
             await vehicleContract.connect(signer).acceptSale(vehicleVIN, { value: ethers.parseEther(priceInEther) });
 
             console.log(`Proposition de vente du véhicule avec le VIN "${vehicleVIN}" acceptée avec succès !`);
 
         } catch (error) {
-            console.error("Erreur lors de la proposition de vente :", error);
+            console.error(`Erreur lors de la proposition de vente du véhicule avec le VIN "${vehicleVIN}" :`, error);
         }
     } else {
         console.error("MetaMask n'est pas installé !");

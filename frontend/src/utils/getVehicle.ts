@@ -28,7 +28,7 @@ export const getVehicle = async (plaqueImatriculation: string, vehicleContractAd
             console.log("Véhicule récupéré :", vehicle);
             return vehicle;
         } catch (error) {
-            console.error("Erreur lors de la connexion à la blockchain :", error);
+            console.error(`Erreur lors de l'obtention des infos du véhicule ${plaqueImatriculation} :`, error);
         }
     } else {
         console.error("MetaMask n'est pas installé !");

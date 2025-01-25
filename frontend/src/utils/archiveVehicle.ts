@@ -26,9 +26,11 @@ export const archiveVehicle = async (
             console.log("Contrat Vehicle chargé :", vehicleContract);
 
             // Archiver le véhicule
-            // TODO
+            await vehicleContract.connect(signer).askForMaintenance(vehicleVIN, targetAddress, ethers.parseEther(priceInEther), { value: ethers.parseEther(priceInEther) });
+            console.log(`Le véhicule ${vehicleVIN} a été archivé avec succès !`);
+
         } catch (error) {
-            console.error("Erreur lors de la connexion à la blockchain :", error);
+            console.error("Erreur lors de l'archivage du véhicule :", error);
         }
     } else {
         console.error("MetaMask n'est pas installé !");
