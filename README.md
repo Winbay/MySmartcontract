@@ -1,3 +1,8 @@
+# Project Goal
+
+The purpose of this project is to build a small application to learn how to create and interact with a smart contract on the Ethereum blockchain using Solidity.
+A simple front-end interface is also included to interact with the smart contract more easily.
+
 # Installation
 
 ## Backend (Smart Contract)
